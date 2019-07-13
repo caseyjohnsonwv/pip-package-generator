@@ -12,6 +12,10 @@ mkdir $PKG_NAME
 mv *.py ./$PKG_NAME
 echo "" > ./$PKG_NAME/__init__.py
 
+#get dependencies in python list syntax, then move requirements.txt to package
+REQUIREMENTS=$(echo $(cat requirements.txt)\"] | sed 's/^/["/' | sed -E 's/[[:blank:]]+/","/g')
+mv requirements.txt ./$PKG_NAME
+
 #generate setup.py template
 cat > setup.py <<- EOM
 import setuptools
@@ -29,6 +33,7 @@ setuptools.setup(
   long_description_content_type = "text/markdown",
   url = "https://github.com/caseyjohnsonwv/pip-package-generator",
   packages = setuptools.find_packages(),
+  install_requires = $REQUIREMENTS,
   classifiers = [
     "Programming Language :: Python :: VERSION UNKNOWN",
     "License :: LICENSE UNKNOWN",
@@ -36,7 +41,6 @@ setuptools.setup(
   ],
 )
 EOM
-mv requirements.txt ./$PKG_NAME
 
 #create a file for pip3 requirements
 echo "twine\nsetuptools\nwheel" > requirements.txt
