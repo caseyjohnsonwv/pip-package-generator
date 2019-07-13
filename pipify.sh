@@ -17,6 +17,7 @@ REQUIREMENTS=$(echo $(cat requirements.txt)\"] | sed 's/^/["/' | sed -E 's/[[:bl
 mv requirements.txt ./$PKG_NAME
 
 #generate setup.py template
+PYTHON_VERSION=$(python3 --version | sed -E 's/[Pp]ython //')
 cat > setup.py <<- EOM
 import setuptools
 
@@ -35,7 +36,7 @@ setuptools.setup(
   packages = setuptools.find_packages(),
   install_requires = $REQUIREMENTS,
   classifiers = [
-    "Programming Language :: Python :: VERSION UNKNOWN",
+    "Programming Language :: Python :: $PYTHON_VERSION",
     "License :: LICENSE UNKNOWN",
     "Operating System :: OS Independent",
   ],
