@@ -1,6 +1,6 @@
 
 if [ $# -gt 0 ]; then
-  cd $PWD/$*
+  cd $*
 fi
 
 PKG_NAME=${PWD##*/}
