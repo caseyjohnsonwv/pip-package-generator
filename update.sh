@@ -9,7 +9,9 @@ fi
 PKG_NAME=$1
 WHERE=$2
 
-cd $PKG_NAME
+if [ ! ${PWD##*/} = $PKG_NAME ]; then
+  cd $PKG_NAME
+fi
 
 pip3 install --upgrade --no-cache-dir -r requirements.txt
 python3 setup.py sdist bdist_wheel
