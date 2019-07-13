@@ -1,14 +1,15 @@
 #!/bin/sh
 
-if [ $# -lt 1 ]; then
+if [ $# -lt 2 ]; then
   echo ''
-  echo Usage: "'update.sh (local | test | prod)'"
+  echo Usage: "'update.sh (package_name) (local | test | prod)'"
   echo ''
   exit
 fi
+PKG_NAME=$1
+WHERE=$2
 
-WHERE=$1
-PKG_NAME=${PWD##*/}
+cd $PKG_NAME
 
 pip3 install --upgrade --no-cache-dir -r requirements.txt
 python3 setup.py sdist bdist_wheel
@@ -32,3 +33,5 @@ fi
 
 rm -rf dist build $PKG_NAME.egg-info
 pip3 freeze | grep $PKG_NAME
+
+cd ..
