@@ -1,6 +1,9 @@
-if [ $# -gt 0 ]; then
-  cd $*
+
+if [ $# -lt 1 ]; then
+  echo PACKAGE FOLDER PATH REQUIRED
+  exit
 fi
+cd $1
 
 PKG_NAME=${PWD##*/}
 rm requirements.txt

@@ -1,16 +1,18 @@
 
-#folder containing package can be supplied
-if [ $# -gt 0 ]; then
-  cd $*
+#folder containing package must be supplied
+if [ $# -lt 1 ]; then
+  echo PACKAGE FOLDER PATH REQUIRED
+  exit
 fi
+cd $1
 
 #package name is always the same as its parent folder
 PKG_NAME=${PWD##*/}
 mkdir $PKG_NAME
 
-#move all source to package and create empty __init__.py
+#move all source to package and populate imports in __init__.py
 mv *.py ./$PKG_NAME
-echo "" > ./$PKG_NAME/__init__.py
+echo "$(ls -1 $PKG_NAME | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./$PKG_NAME/__init__.py
 
 #get dependencies in python list syntax, then move requirements.txt to package
 REQUIREMENTS=$(echo $(cat requirements.txt)\"] | sed 's/^/["/' | sed -E 's/[[:blank:]]+/","/g')
