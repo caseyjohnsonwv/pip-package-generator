@@ -1,11 +1,8 @@
 # pip-package-generator
 
-####Maintained by Casey Johnson.
-
-https://github.com/caseyjohnsonwv/pip-package-generator
-
-
-A series of shell scripts for easily creating and distributing pip packages.
+- _Maintained by Casey Johnson._
+- A series of shell scripts for easily creating and distributing pip packages.
+- https://github.com/caseyjohnsonwv/pip-package-generator
 
 
 To convert a Python project into a pip package:
