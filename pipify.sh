@@ -22,7 +22,7 @@ printf "Moving project source to package.\n"
 mv *.py */ ./"$PKG_NAME" 2>/dev/null || true
 SEARCHTREE="./*/"
 if [ -d $SEARCHTREE/**/ ]; then
-  SEARCHTREE=$(echo "$SEARCHTREE ./*/**/")
+  SEARCHTREE="./*/**/"
 fi
 for DIR in $SEARCHTREE; do
   echo "$(ls -1 "$DIR" | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./"$DIR"/__init__.py
