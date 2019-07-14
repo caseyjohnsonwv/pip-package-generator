@@ -18,4 +18,4 @@ To update a pip package distribution:
 
 To convert a pip package back into a Python project (for testing only):
 1. Move `depipify.sh` to the top-level package folder (containing `setup.py`).
-2. Run `depipify.sh` .'
+2. Run `depipify.sh .`
