@@ -21,6 +21,17 @@ printf "Reading project dependencies from requirements.txt.\n"
 REQUIREMENTS=$(echo $(cat requirements.txt)\"] | sed 's/^/["/' | sed -E 's/[[:blank:]]+/","/g')
 mv requirements.txt ./$PKG_NAME
 
+#create a license and readme if not already present
+if [ ! -f "README.md" ]; then
+  printf "Creating package README file.\n"
+  echo "" > README.md
+fi
+
+if [ ! -f "LICENSE" ]; then
+  printf "Creating package LICENSE file.\n"
+  echo "https://choosealicense.com/" > LICENSE
+fi
+
 #generate setup.py template
 printf "Creating setup.py from project dependencies.\n"
 PYTHON_VERSION=$(python3 --version | sed -E 's/[Pp]ython //')
@@ -52,16 +63,5 @@ EOM
 #create a file for pip3 requirements
 printf "Creating package requirements.txt.\n"
 echo "twine\nsetuptools\nwheel" > requirements.txt
-
-#create a license and readme if not already present
-if [ ! -f "README.md" ]; then
-  printf "Creating package README file.\n"
-  echo "" > README.md
-fi
-
-if [ ! -f "LICENSE" ]; then
-  printf "Creating package LICENSE file.\n"
-  echo "https://choosealicense.com/" > LICENSE
-fi
 
 printf "\nPip package '$PKG_NAME' successfully created.\n\n"
