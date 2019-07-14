@@ -1,6 +1,11 @@
-if [ $# -gt 0 ]; then
-  cd $*
+
+#this is an 'undo' tool, meant only for testing
+
+if [ $# -lt 1 ]; then
+  printf "\nPACKAGE FOLDER PATH REQUIRED\n"
+  exit
 fi
+cd $1
 
 PKG_NAME=${PWD##*/}
 rm requirements.txt

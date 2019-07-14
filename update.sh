@@ -1,39 +1,48 @@
 #!/bin/sh
 
 if [ $# -lt 2 ]; then
-  echo ''
-  echo Usage: "'update.sh (package_name) (local | test | prod)'"
-  echo ''
+  printf "Usage: 'update.sh (path to package top-level) (local | test | prod)'\n\n"
   exit
 fi
-PKG_NAME=$1
 WHERE=$2
+cd $1
+PKG_NAME=${PWD##*/}
 
-if [ ! ${PWD##*/} = $PKG_NAME ]; then
-  cd $PKG_NAME
-fi
+#install/update requirements for using pip
+printf "Installing and updating pip dependencies.\n"
+pip3 install -q --upgrade --no-cache-dir -r requirements.txt
 
-pip3 install --upgrade --no-cache-dir -r requirements.txt
-python3 setup.py sdist bdist_wheel
+#build pip package
+printf "Building package from file hierarchy.\n"
+python3 setup.py -q sdist -q bdist_wheel
 
+#install new version on local only
 if [ $WHERE = "local" ]; then
-  pip3 uninstall $PKG_NAME -y
-  pip3 install --no-cache-dir dist/*.whl
+  printf "Uninstalling and reinstalling '$PKG_NAME' with pip.\n"
+  pip3 uninstall -q $PKG_NAME -y
+  pip3 install -q --no-cache-dir dist/*.whl
 fi
 
+#release new version on test.pypi, then install on local
 if [ $WHERE = "test" ]; then
-  twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+  printf "Uploading '$PKG_NAME' to https://test.pypi.org/project/$PKG_NAME/.\n"
+  twine upload -q --repository-url https://test.pypi.org/legacy/ dist/*
   sleep 3
-  pip3 install --no-cache-dir --upgrade --index-url https://test.pypi.org/simple $PKG_NAME
+  printf "Installing and updating '$PKG_NAME' with pip.\n"
+  pip3 install -q --no-cache-dir --upgrade --index-url https://test.pypi.org/simple $PKG_NAME
 fi
 
+#release new version on real pypi, then install on local
 if [ $WHERE = "prod" ]; then
+  printf "Uploading '$PKG_NAME' to https://pypi.org/project/$PKG_NAME/.\n"
   twine upload dist/*
   sleep 3
+  printf "Installing and updating '$PKG_NAME' with pip.\n"
   pip3 install --no-cache-dir --upgrade $PKG_NAME
 fi
 
-rm -rf dist build $PKG_NAME.egg-info
-pip3 freeze | grep $PKG_NAME
-
+#cleanup build files
+rm -rf dist build *.egg-info
 cd ..
+
+echo \'$PKG_NAME\' is now on version \'$(pip3 freeze | grep $PKG_NAME | sed "s/$PKG_NAME==//")\' && echo ''
