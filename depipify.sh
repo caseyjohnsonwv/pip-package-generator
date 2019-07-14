@@ -7,8 +7,16 @@ if [ $# -lt 1 ]; then
 fi
 cd $1
 
+if [ ! -f "setup.py" ]; then
+  printf "\nPROJECT ALREADY DE-PIPIFIED\n"
+  exit
+fi
+
 PKG_NAME=${PWD##*/}
 rm requirements.txt
-mv $PKG_NAME/* .
-mv __init__.py setup.py $PKG_NAME
-rm -rf $PKG_NAME
+for DIR in ./*/ ./*/**/; do
+  rm "$DIR"/__init__.py
+done
+mv "$PKG_NAME"/* .
+rm setup.py
+rm -rf "$PKG_NAME"
