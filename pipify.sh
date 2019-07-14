@@ -1,7 +1,7 @@
 
 #folder containing package must be supplied
 if [ $# -lt 1 ]; then
-  printf "\nPACKAGE FOLDER PATH REQUIRED\n"
+  printf "Usage: 'pipify.sh (path to Python project)'"
   exit
 fi
 cd $1
