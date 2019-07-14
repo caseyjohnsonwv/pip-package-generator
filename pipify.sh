@@ -17,6 +17,10 @@ mv *.py ./$PKG_NAME
 echo "$(ls -1 $PKG_NAME | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./$PKG_NAME/__init__.py
 
 #get dependencies in python list syntax, then move requirements.txt to package
+if [ ! -f "requirements.txt" ]; then
+  printf "Creating project requirements.txt.\n"
+  echo '' > requirements.txt
+fi
 printf "Reading project dependencies from requirements.txt.\n"
 REQUIREMENTS=$(echo $(cat requirements.txt)\"] | sed 's/^/["/' | sed -E 's/[[:blank:]]+/","/g')
 mv requirements.txt ./$PKG_NAME
