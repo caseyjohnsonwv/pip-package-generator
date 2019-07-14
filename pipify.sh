@@ -23,6 +23,9 @@ if [ ! -f "requirements.txt" ]; then
 fi
 printf "Reading project dependencies from requirements.txt.\n"
 REQUIREMENTS=$(echo $(cat requirements.txt)\"] | sed 's/^/["/' | sed -E 's/[[:blank:]]+/","/g')
+if [ $REQUIREMENTS = "[\"\"]" ]; then
+  REQUIREMENTS="[]"
+fi
 mv requirements.txt ./$PKG_NAME
 
 #create a license and readme if not already present
