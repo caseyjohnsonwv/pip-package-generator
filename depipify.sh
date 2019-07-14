@@ -1,6 +1,8 @@
 
+#this is an 'undo' tool, meant only for testing
+
 if [ $# -lt 1 ]; then
-  echo PACKAGE FOLDER PATH REQUIRED
+  printf "\nPACKAGE FOLDER PATH REQUIRED\n"
   exit
 fi
 cd $1
