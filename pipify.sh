@@ -20,7 +20,11 @@ mkdir "$PKG_NAME"
 #move all source to package and populate imports in __init__.py
 printf "Moving project source to package.\n"
 mv *.py */ ./"$PKG_NAME" 2>/dev/null || true
-for DIR in ./*/ ./*/**/; do
+SEARCHTREE="./*/"
+if [ -d $SEARCHTREE/**/ ]; then
+  SEARCHTREE=$(echo "$SEARCHTREE ./*/**/")
+fi
+for DIR in $SEARCHTREE; do
   echo "$(ls -1 "$DIR" | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./"$DIR"/__init__.py
 done
 
