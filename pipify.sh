@@ -1,20 +1,28 @@
 
 #folder containing package must be supplied
 if [ $# -lt 1 ]; then
-  printf "Usage: 'pipify.sh (path to Python project)'"
+  printf "Usage: 'pipify.sh (path to Python project)'\n"
   exit
 fi
 cd $1
 
+#check for pre-pipified project
+if [ -f "setup.py" ]; then
+  printf "Found 'setup.py' - project already pipified.\n"
+  exit
+fi
+
 #package name is always the same as its parent folder
 printf "Creating package file hierarchy.\n"
 PKG_NAME=${PWD##*/}
-mkdir $PKG_NAME
+mkdir "$PKG_NAME"
 
 #move all source to package and populate imports in __init__.py
 printf "Moving project source to package.\n"
-mv *.py ./$PKG_NAME
-echo "$(ls -1 $PKG_NAME | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./$PKG_NAME/__init__.py
+mv *.py */ ./"$PKG_NAME" 2>/dev/null || true
+for DIR in ./*/ ./*/**/; do
+  echo "$(ls -1 "$DIR" | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./"$DIR"/__init__.py
+done
 
 #get dependencies in python list syntax, then move requirements.txt to package
 if [ ! -f "requirements.txt" ]; then
@@ -26,7 +34,7 @@ REQUIREMENTS=$(echo $(cat requirements.txt)\"] | sed 's/^/["/' | sed -E 's/[[:bl
 if [ $REQUIREMENTS = "[\"\"]" ]; then
   REQUIREMENTS="[]"
 fi
-mv requirements.txt ./$PKG_NAME
+mv requirements.txt ./"$PKG_NAME"
 
 #create a license and readme if not already present
 if [ ! -f "README.md" ]; then
@@ -49,7 +57,7 @@ with open("README.md", "r") as fh:
   long_description = fh.read()
 
 setuptools.setup(
-  name = "$PKG_NAME",
+  name = ""$PKG_NAME"",
   version = "0.0.1",
   author = "Author Name",
   author_email = "person@example.com",
@@ -71,4 +79,4 @@ EOM
 printf "Creating package requirements.txt.\n"
 echo "twine\nsetuptools\nwheel" > requirements.txt
 
-printf "\nPip package '$PKG_NAME' successfully created.\n\n"
+printf "\nPip package '"$PKG_NAME"' successfully created.\n\n"
