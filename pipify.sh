@@ -60,7 +60,7 @@ mv requirements.txt ./"$PKG_NAME"
 #create a license and readme if not already present
 if [ ! -f "README.md" ]; then
   printf "Creating package README file.\n"
-  echo "" > README.md
+  echo "# $PKG_NAME" > README.md
 fi
 
 if [ ! -f "LICENSE" ]; then
