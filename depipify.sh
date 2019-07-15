@@ -15,7 +15,7 @@ fi
 PKG_NAME=${PWD##*/}
 rm requirements.txt
 for DIR in ./*/ ./*/**/; do
-  rm "$DIR"/__init__.py
+  rm "$DIR"/__init__.py 2>/dev/null || true
 done
 mv "$PKG_NAME"/* .
 rm setup.py
