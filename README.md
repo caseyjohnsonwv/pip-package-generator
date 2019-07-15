@@ -5,6 +5,9 @@
 - https://github.com/caseyjohnsonwv/pip-package-generator
 
 
+To create a new Python project with the pip package structure:
+1. Run `pipify.sh (project-name)`
+
 To convert a Python project into a pip package:
 1. Move `pipify.sh` to the top-level source folder.
 2. Run `pipify.sh .`

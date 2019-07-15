@@ -1,10 +1,24 @@
+echo ''
 
 #folder containing package must be supplied
 if [ $# -lt 1 ]; then
   printf "Usage: 'pipify.sh (path to Python project)'\n"
   exit
 fi
-cd $1
+PROJ_PATH=$1
+
+#create new project if directory not found
+CREATE="N"
+if [ ! -d "$PROJ_PATH" ]; then
+  read -p "Path '$PROJ_PATH' not found - create new project? [y/N]: " CREATE
+  if [ ${CREATE:0:1} = "y" ] || [ ${CREATE:0:1} = "Y" ]; then
+    CREATE="Y"
+    mkdir "$PROJ_PATH"
+  else
+    exit
+  fi
+fi
+cd "$PROJ_PATH"
 
 #check for pre-pipified project
 if [ -f "setup.py" ]; then
@@ -16,13 +30,16 @@ fi
 printf "Creating package file hierarchy.\n"
 PKG_NAME=${PWD##*/}
 mkdir "$PKG_NAME"
-
-#move all source to package and populate imports in __init__.py
-printf "Moving project source to package.\n"
-mv *.py */ ./"$PKG_NAME" 2>/dev/null || true
 SEARCHTREE="./*/"
-if [ -d $SEARCHTREE/**/ ]; then
-  SEARCHTREE="./*/ ./*/**/"
+if [ "$CREATE" = "Y" ]; then
+  echo '' > $PKG_NAME/project.py
+else
+  #move all source to package and populate imports in __init__.py
+  printf "Moving project source to package.\n"
+  mv *.py */ ./"$PKG_NAME" 2>/dev/null || true
+  if [ -d $SEARCHTREE/**/ ]; then
+    SEARCHTREE="./*/ ./*/**/"
+  fi
 fi
 for DIR in $SEARCHTREE; do
   echo "$(ls -1 "$DIR" | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./"$DIR"/__init__.py
@@ -43,7 +60,7 @@ mv requirements.txt ./"$PKG_NAME"
 #create a license and readme if not already present
 if [ ! -f "README.md" ]; then
   printf "Creating package README file.\n"
-  echo "" > README.md
+  echo "# $PKG_NAME" > README.md
 fi
 
 if [ ! -f "LICENSE" ]; then
