@@ -8,9 +8,11 @@ fi
 PROJ_PATH=$1
 
 #create new project if directory not found
+CREATE="N"
 if [ ! -d "$PROJ_PATH" ]; then
-  read -p "Path not found - create new project? [y/N]: " CREATE
+  read -p "Path '$PROJ_PATH' not found - create new project? [y/N]: " CREATE
   if [ ${CREATE:0:1} = "y" ] || [ ${CREATE:0:1} = "Y" ]; then
+    CREATE="Y"
     mkdir "$PROJ_PATH"
   else
     exit
@@ -28,13 +30,16 @@ fi
 printf "Creating package file hierarchy.\n"
 PKG_NAME=${PWD##*/}
 mkdir "$PKG_NAME"
-
-#move all source to package and populate imports in __init__.py
-printf "Moving project source to package.\n"
-mv *.py */ ./"$PKG_NAME" 2>/dev/null || true
 SEARCHTREE="./*/"
-if [ -d $SEARCHTREE/**/ ]; then
-  SEARCHTREE="./*/ ./*/**/"
+if [ "$CREATE" = "Y" ]; then
+  echo '' > $PKG_NAME/project.py
+else
+  #move all source to package and populate imports in __init__.py
+  printf "Moving project source to package.\n"
+  mv *.py */ ./"$PKG_NAME" 2>/dev/null || true
+  if [ -d $SEARCHTREE/**/ ]; then
+    SEARCHTREE="./*/ ./*/**/"
+  fi
 fi
 for DIR in $SEARCHTREE; do
   echo "$(ls -1 "$DIR" | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./"$DIR"/__init__.py
