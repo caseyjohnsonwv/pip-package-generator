@@ -1,10 +1,22 @@
+echo ''
 
 #folder containing package must be supplied
 if [ $# -lt 1 ]; then
   printf "Usage: 'pipify.sh (path to Python project)'\n"
   exit
 fi
-cd $1
+PROJ_PATH=$1
+
+#create new project if directory not found
+if [ ! -d "$PROJ_PATH" ]; then
+  read -p "Path not found - create new project? [y/N]: " CREATE
+  if [ ${CREATE:0:1} = "y" ] || [ ${CREATE:0:1} = "Y" ]; then
+    mkdir "$PROJ_PATH"
+  else
+    exit
+  fi
+fi
+cd "$PROJ_PATH"
 
 #check for pre-pipified project
 if [ -f "setup.py" ]; then
