@@ -61,7 +61,7 @@ with open("README.md", "r") as fh:
   long_description = fh.read()
 
 setuptools.setup(
-  name = ""$PKG_NAME"",
+  name = "$PKG_NAME",
   version = "0.0.1",
   author = "Author Name",
   author_email = "person@example.com",
@@ -83,4 +83,4 @@ EOM
 printf "Creating package requirements.txt.\n"
 echo "twine\nsetuptools\nwheel" > requirements.txt
 
-printf "\nPip package '"$PKG_NAME"' successfully created.\n\n"
+printf "\nPip package '$PKG_NAME' successfully created.\n\n"
