@@ -80,12 +80,12 @@ with open("README.md", "r") as fh:
 setuptools.setup(
   name = "$PKG_NAME",
   version = "0.0.1",
-  author = "Author Name",
-  author_email = "person@example.com",
-  description = "Auto-generated pip package from GitHub project 'pip-package-generator'.",
+  author = "",
+  author_email = "",
+  description = "",
   long_description = long_description,
   long_description_content_type = "text/markdown",
-  url = "https://github.com/caseyjohnsonwv/pip-package-generator",
+  url = "",
   packages = setuptools.find_packages(),
   install_requires = $REQUIREMENTS,
   classifiers = [
