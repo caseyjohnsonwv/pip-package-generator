@@ -29,7 +29,7 @@ if [ $WHERE = "test" ]; then
   twine upload --repository-url https://test.pypi.org/legacy/ dist/*
   sleep 3
   printf "Installing and updating '$PKG_NAME' with pip.\n"
-  pip3 install -q --no-cache-dir --upgrade --index-url https://test.pypi.org/simple "$PKG_NAME"
+  pip3 install --no-cache-dir --upgrade --index-url https://test.pypi.org/simple "$PKG_NAME"
 fi
 
 #release new version on real pypi, then install on local
