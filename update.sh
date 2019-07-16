@@ -26,7 +26,7 @@ fi
 #release new version on test.pypi, then install on local
 if [ $WHERE = "test" ]; then
   printf "Uploading '$PKG_NAME' to https://test.pypi.org/project/$PKG_NAME/.\n"
-  twine upload -q --repository-url https://test.pypi.org/legacy/ dist/*
+  twine upload --repository-url https://test.pypi.org/legacy/ dist/*
   sleep 3
   printf "Installing and updating '$PKG_NAME' with pip.\n"
   pip3 install -q --no-cache-dir --upgrade --index-url https://test.pypi.org/simple "$PKG_NAME"
