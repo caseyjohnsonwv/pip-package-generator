@@ -57,7 +57,7 @@ if [ $REQUIREMENTS = "[\"\"]" ]; then
 fi
 mv requirements.txt ./"$PKG_NAME"
 
-#create a license and readme if not already present
+#create a license, readme, and manifest if not already present
 if [ ! -f "README.md" ]; then
   printf "Creating package README file.\n"
   echo "# $PKG_NAME" > README.md
@@ -66,6 +66,11 @@ fi
 if [ ! -f "LICENSE" ]; then
   printf "Creating package LICENSE file.\n"
   echo "https://choosealicense.com/" > LICENSE
+fi
+
+if [ ! -f "MANIFEST.in" ]; then
+  printf "Creating package MANIFEST file.\n"
+  echo '' > MANIFEST.in
 fi
 
 #generate setup.py template
@@ -87,6 +92,7 @@ setuptools.setup(
   long_description_content_type = "text/markdown",
   url = "",
   packages = setuptools.find_packages(),
+  include_package_data = True,
   install_requires = $REQUIREMENTS,
   classifiers = [
     "Programming Language :: Python :: $PYTHON_VERSION",
