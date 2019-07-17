@@ -21,13 +21,13 @@ fi
 cd "$PROJ_PATH"
 
 #check for pre-pipified project
-if [ -f "setup.py" ]; then
+if [ -f "setup.py" ] || [ -d "$PKG_NAME" ]; then
   printf "Found 'setup.py' - project already pipified.\n"
   exit
 fi
 
-#package name is always the same as its parent folder
 printf "Creating package file hierarchy.\n"
+#package name is always the same as its parent folder
 PKG_NAME=${PWD##*/}
 mkdir "$PKG_NAME"
 SEARCHTREE="./*/"
@@ -44,6 +44,12 @@ fi
 for DIR in $SEARCHTREE; do
   echo "$(ls -1 "$DIR" | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./"$DIR"/__init__.py
 done
+#move extensionless script files to /bin
+ANONFILES=$(ls -F | grep -v '\.' | grep -v "LICENSE" | grep -v "$PKG_NAME")
+if [ "$ANONFILES" != "" ]; then
+  mkdir ./bin
+  mv $ANONFILES ./bin
+fi
 
 #get dependencies in python list syntax, then move requirements.txt to package
 if [ ! -f "requirements.txt" ]; then
