@@ -49,6 +49,10 @@ ANONFILES=$(ls -F | grep -v '\.' | grep -v "LICENSE" | grep -v "$PKG_NAME")
 if [ "$ANONFILES" != "" ]; then
   mkdir ./bin
   mv $ANONFILES ./bin
+  #get files in python list syntax for setup.py
+  ANONFILES=$(echo $ANONFILES\"] | sed -E 's/^/["bin\//' | sed -E 's/[[:blank:]]/","bin\//g')
+else
+  ANONFILES="[]"
 fi
 
 #get dependencies in python list syntax, then move requirements.txt to package
@@ -99,6 +103,7 @@ setuptools.setup(
   url = "",
   packages = setuptools.find_packages(),
   include_package_data = True,
+  scripts = $ANONFILES,
   install_requires = $REQUIREMENTS,
   classifiers = [
     "Programming Language :: Python :: $PYTHON_VERSION",
