@@ -21,13 +21,13 @@ fi
 cd "$PROJ_PATH"
 
 #check for pre-pipified project
-if [ -f "setup.py" ]; then
+if [ -f "setup.py" ] || [ -d "$PKG_NAME" ]; then
   printf "Found 'setup.py' - project already pipified.\n"
   exit
 fi
 
-#package name is always the same as its parent folder
 printf "Creating package file hierarchy.\n"
+#package name is always the same as its parent folder
 PKG_NAME=${PWD##*/}
 mkdir "$PKG_NAME"
 SEARCHTREE="./*/"
@@ -44,6 +44,16 @@ fi
 for DIR in $SEARCHTREE; do
   echo "$(ls -1 "$DIR" | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./"$DIR"/__init__.py
 done
+#move extensionless script files to /bin
+ANONFILES=$(ls -F | grep -v '\.' | grep -v "LICENSE" | grep -v "$PKG_NAME")
+if [ "$ANONFILES" != "" ]; then
+  mkdir ./bin
+  mv $ANONFILES ./bin
+  #get files in python list syntax for setup.py
+  ANONFILES=$(echo $ANONFILES\"] | sed -E 's/^/["bin\//' | sed -E 's/[[:blank:]]/","bin\//g')
+else
+  ANONFILES="[]"
+fi
 
 #get dependencies in python list syntax, then move requirements.txt to package
 if [ ! -f "requirements.txt" ]; then
@@ -57,7 +67,7 @@ if [ $REQUIREMENTS = "[\"\"]" ]; then
 fi
 mv requirements.txt ./"$PKG_NAME"
 
-#create a license and readme if not already present
+#create a license, readme, and manifest if not already present
 if [ ! -f "README.md" ]; then
   printf "Creating package README file.\n"
   echo "# $PKG_NAME" > README.md
@@ -66,6 +76,11 @@ fi
 if [ ! -f "LICENSE" ]; then
   printf "Creating package LICENSE file.\n"
   echo "https://choosealicense.com/" > LICENSE
+fi
+
+if [ ! -f "MANIFEST.in" ]; then
+  printf "Creating package MANIFEST file.\n"
+  echo '' > MANIFEST.in
 fi
 
 #generate setup.py template
@@ -87,6 +102,8 @@ setuptools.setup(
   long_description_content_type = "text/markdown",
   url = "",
   packages = setuptools.find_packages(),
+  include_package_data = True,
+  scripts = $ANONFILES,
   install_requires = $REQUIREMENTS,
   classifiers = [
     "Programming Language :: Python :: $PYTHON_VERSION",
