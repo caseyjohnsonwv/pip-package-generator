@@ -14,7 +14,7 @@ setuptools.setup(
   url = "https://github.com/caseyjohnsonwv/pip-package-generator",
   packages = setuptools.find_packages(),
   include_package_data = True,
-  scripts = [],
+  scripts = ['./pipgen/pipify.sh', './pipgen/depipify.sh', './pipgen/update.sh'],
   install_requires = [],
   classifiers = [
     "Programming Language :: Python :: 3",
