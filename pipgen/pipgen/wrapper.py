@@ -1,5 +1,8 @@
 import subprocess
 
+def test():
+    print("Test")
+
 def pipify(directory_name):
     """Organize a Python project into a pip package hierarchy (or create a new pip-compliant project)"""
     command = ["sh", "pipify.sh", directory_name]
