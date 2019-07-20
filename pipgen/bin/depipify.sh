@@ -1,5 +1,3 @@
-#! /usr/bin/env bash
-
 #this is an 'undo' tool, meant only for testing
 
 if [ $# -lt 1 ]; then

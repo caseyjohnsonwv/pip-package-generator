@@ -1,5 +1,3 @@
-#! /usr/bin/env bash
-
 if [ $# -lt 2 ]; then
   printf "Usage: 'update.sh (path to package top-level) (local | test | prod)'\n\n"
   exit
