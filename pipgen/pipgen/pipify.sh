@@ -85,7 +85,8 @@ fi
 
 #generate setup.py template
 printf "Creating setup.py from project dependencies.\n"
-PYTHON_VERSION=$(python3 --version | sed -E 's/[Pp]ython //')
+PYTHON_VERSION=$(python3 --version | sed -E 's/Python //')
+PYTHON_VERSION=${PYTHON_VERSION:0:1}
 cat > setup.py <<- EOM
 import setuptools
 
