@@ -1,3 +1,4 @@
+#! /usr/bin/env bash
 
 #this is an 'undo' tool, meant only for testing
 
