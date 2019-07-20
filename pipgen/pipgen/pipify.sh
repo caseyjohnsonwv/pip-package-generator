@@ -1,5 +1,3 @@
-#! /usr/bin/env bash
-
 echo ''
 
 #folder containing package must be supplied
