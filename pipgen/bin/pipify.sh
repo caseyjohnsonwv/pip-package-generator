@@ -45,14 +45,14 @@ for DIR in $SEARCHTREE; do
   echo "$(ls -1 "$DIR" | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./"$DIR"/__init__.py
 done
 #move extensionless script files to /bin
-ANONFILES=$(ls -F | grep -v '\.' | grep -v "LICENSE" | grep -v "$PKG_NAME")
-if [ "$ANONFILES" != "" ]; then
+INCLUDESCRIPTS="$(ls -F | grep -v '/' | grep -v '\.' | grep -v 'LICENSE') $(ls | grep '.sh')"
+if [ "$INCLUDESCRIPTS" != " " ]; then
   mkdir ./bin
-  mv $ANONFILES ./bin
+  mv $INCLUDESCRIPTS ./bin
   #get files in python list syntax for setup.py
-  ANONFILES=$(echo $ANONFILES\"] | sed -E 's/^/["bin\//' | sed -E 's/[[:blank:]]/","bin\//g')
+  INCLUDESCRIPTS=$(echo $INCLUDESCRIPTS\"] | sed -E 's/^/["bin\//' | sed -E 's/[[:blank:]]/","bin\//g')
 else
-  ANONFILES="[]"
+  INCLUDESCRIPTS="[]"
 fi
 
 #get dependencies in python list syntax, then move requirements.txt to package
@@ -104,7 +104,7 @@ setuptools.setup(
   url = "",
   packages = setuptools.find_packages(),
   include_package_data = True,
-  scripts = $ANONFILES,
+  scripts = $INCLUDESCRIPTS,
   install_requires = $REQUIREMENTS,
   classifiers = [
     "Programming Language :: Python :: $PYTHON_VERSION",
