@@ -18,4 +18,4 @@ for DIR in ./*/ ./*/**/; do
 done
 mv */* . 2>/dev/null || true
 rm setup.py
-rm -rf */ 2>/dev/null || true
+rm -rf "$PKG_NAME" 2>/dev/null || true
