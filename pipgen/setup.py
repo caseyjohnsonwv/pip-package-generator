@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
   name = "pipgen",
-  version = "0.0.4",
+  version = "0.0.5",
   author = "Casey Johnson",
   author_email = "ctj0001@mix.wvu.edu",
   description = "A package for easily creating and distributing pip packages.",

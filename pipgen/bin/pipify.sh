@@ -42,7 +42,10 @@ else
   fi
 fi
 for DIR in $SEARCHTREE; do
-  echo "$(ls -1 "$DIR" | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./"$DIR"/__init__.py
+  NUMPYFILES=$(ls -1 $DIR | grep '.py'| wc -l | sed -E 's/[[:blank:]]//g')
+  if [ $NUMPYFILES != "0" ]; then
+    echo "$(ls -1 "$DIR" | grep .py | sed -E 's/^/from \./g' | sed -E 's/.py//g' | sed -E 's/$/ import */g')" > ./"$DIR"/__init__.py
+  fi
 done
 #move extensionless script files to /bin
 INCLUDESCRIPTS="$(ls -F | grep -v '/' | grep -v '\.' | grep -v 'LICENSE') $(ls | grep '.sh')"
