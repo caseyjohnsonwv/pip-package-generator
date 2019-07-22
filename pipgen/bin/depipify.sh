@@ -16,6 +16,6 @@ rm requirements.txt
 for DIR in ./*/ ./*/**/; do
   rm "$DIR"/__init__.py 2>/dev/null || true
 done
-mv "$PKG_NAME"/* bin/* . 2>/dev/null || true
+mv */* . 2>/dev/null || true
 rm setup.py
-rm -rf "$PKG_NAME" bin/ 2>/dev/null || true
+rm -rf */ 2>/dev/null || true
