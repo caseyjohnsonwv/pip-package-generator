@@ -34,12 +34,10 @@ fi
 if [ $WHERE = "prod" ]; then
   printf "Uploading '$PKG_NAME' to https://pypi.org/project/$PKG_NAME/.\n"
   twine upload dist/*
-  sleep 3
-  printf "Installing and updating '$PKG_NAME' with pip.\n"
-  pip3 install --no-cache-dir --upgrade "$PKG_NAME"
-  #retroactively release on test.pypi as well
-  printf "Uploading '$PKG_NAME' to https://test.pypi.org/project/$PKG_NAME/.\n"
-  twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+  sleep 5
+  printf "Installing and updating '$PKG_NAME' on local with pip.\n"
+  pip3 uninstall -q "$PKG_NAME" -y
+  pip3 install -q --no-cache-dir "$PKG_NAME"
 fi
 
 #cleanup build files
