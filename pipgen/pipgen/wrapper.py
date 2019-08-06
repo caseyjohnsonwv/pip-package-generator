@@ -15,5 +15,5 @@ def depipify(directory_name):
 
 def update(directory_name, location='local'):
     """Build package and install in location - 'local', 'test', or 'prod' - shell script"""
-    command = ["sh", "update.sh", directory_name, location]
+    command = ["sh", "pippush.sh", directory_name, location]
     subprocess.run(command)
