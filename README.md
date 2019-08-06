@@ -16,7 +16,7 @@ To rearrange a Python project into the pip package structure:
 1. Run `sh pipify.sh <existing/project/path>`.
 
 To update a pip package distribution:
-1. Run `sh update.sh <path/to/project> < local |test | prod >`.
+1. Run `sh update.sh <path/to/project> <local|test|prod>`.
 
 To convert a pip package back into a Python project (for testing only):
 1. Run `sh depipify.sh <path/to/project>`.
