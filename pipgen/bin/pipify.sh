@@ -117,8 +117,4 @@ setuptools.setup(
 )
 EOM
 
-#create a file for pip3 requirements
-printf "Creating package requirements.txt.\n"
-echo "twine\nsetuptools\nwheel" > requirements.txt
-
 printf "\nPip package '$PKG_NAME' successfully created.\n\n"
