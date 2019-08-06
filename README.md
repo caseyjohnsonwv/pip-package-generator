@@ -10,21 +10,13 @@ Installation:
 2. Run `pip3 install pipgen`.
 
 To create a new Python project with the pip package structure:
-1. Launch the Python3 interpreter with the command `Python` or `Python3`.
-2. Run `import pipgen`.
-3. Run `pipgen.pipify('<path/to/project>')`.
+1. Run `sh pipify.sh <new/project/path>`.
 
 To rearrange a Python project into the pip package structure:
-1. Launch the Python3 interpreter with the command `Python` or `Python3`.
-2. Run `import pipgen`.
-3. Run `pipgen.pipify('<path/to/project>')`.
+1. Run `sh pipify.sh <existing/project/path>`.
 
 To update a pip package distribution:
-1. Launch the Python3 interpreter with the command `Python` or `Python3`.
-2. Run `import pipgen`.
-3. Run `pipgen.update('<path/to/project>', < 'local' | 'test' | 'prod' >)`.
+1. Run `sh update.sh <path/to/project> < local |test | prod >`.
 
 To convert a pip package back into a Python project (for testing only):
-1. Launch the Python3 interpreter with the command `Python` or `Python3`.
-2. Run `import pipgen`.
-3. Run `pipgen.depipify('<path/to/project>')`.
+1. Run `sh depipify.sh <path/to/project>`.
