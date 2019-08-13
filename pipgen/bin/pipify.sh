@@ -22,7 +22,7 @@ cd "$PROJ_PATH"
 
 #check for pre-pipified project
 if [ -f "setup.py" ] || [ -d "$PKG_NAME" ]; then
-  printf "Found 'setup.py' - project already pipified.\n"
+  printf "Found 'setup.py' or '$PKG_NAME' folder- project already pipified.\n"
   exit
 fi
 
