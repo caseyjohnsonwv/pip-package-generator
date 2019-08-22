@@ -22,7 +22,7 @@ cd "$PROJ_PATH"
 
 #check for pre-pipified project
 if [ -f "setup.py" ] || [ -d "$PKG_NAME" ]; then
-  printf "Found 'setup.py' - project already pipified.\n"
+  printf "Found 'setup.py' or '$PKG_NAME' folder- project already pipified.\n"
   exit
 fi
 
@@ -88,7 +88,7 @@ fi
 
 #generate setup.py template
 printf "Creating setup.py from project dependencies.\n"
-PYTHON_VERSION=$(python3 --version | sed -E 's/Python //')
+PYTHON_VERSION=$(python --version | sed -E 's/Python //')
 PYTHON_VERSION=${PYTHON_VERSION:0:1}
 cat > setup.py <<- EOM
 import setuptools
